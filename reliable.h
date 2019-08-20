@@ -7,17 +7,17 @@
 
         1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 
-        2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer 
+        2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
            in the documentation and/or other materials provided with the distribution.
 
-        3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived 
+        3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived
            from this software without specific prior written permission.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
-    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
     WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
     USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
@@ -26,6 +26,18 @@
 #define RELIABLE_H
 
 #include <stdint.h>
+
+#ifdef _MSC_VER
+    #ifdef RELIABLE_DLL_EXPORT  // Shared build
+        #define RELIABLE_API_ __declspec(dllexport)
+    #elif RELIABLE_STATIC   // No decoration when building statically
+        #define RELIABLE_API_
+    #else               // Link to lib
+        #define RELIABLE_API_ __declspec(dllimport)
+    #endif
+#else
+    #define RELIABLE_API_
+#endif
 
 #if    defined(__386__) || defined(i386)    || defined(__i386__)  \
     || defined(__X86)   || defined(_M_IX86)                       \
@@ -75,9 +87,9 @@ extern "C" {
 #endif
 #endif
 
-int reliable_init();
+RELIABLE_API_ int reliable_init();
 
-void reliable_term();
+RELIABLE_API_ void reliable_term();
 
 struct reliable_config_t
 {
@@ -103,41 +115,41 @@ struct reliable_config_t
     void (*free_function)(void*,void*);
 };
 
-void reliable_default_config( struct reliable_config_t * config );
+RELIABLE_API_ void reliable_default_config( struct reliable_config_t * config );
 
 struct reliable_endpoint_t * reliable_endpoint_create( struct reliable_config_t * config, double time );
 
-uint16_t reliable_endpoint_next_packet_sequence( struct reliable_endpoint_t * endpoint );
+RELIABLE_API_ uint16_t reliable_endpoint_next_packet_sequence( struct reliable_endpoint_t * endpoint );
 
-void reliable_endpoint_send_packet( struct reliable_endpoint_t * endpoint, uint8_t * packet_data, int packet_bytes );
+RELIABLE_API_ void reliable_endpoint_send_packet( struct reliable_endpoint_t * endpoint, uint8_t * packet_data, int packet_bytes );
 
-void reliable_endpoint_receive_packet( struct reliable_endpoint_t * endpoint, uint8_t * packet_data, int packet_bytes );
+RELIABLE_API_ void reliable_endpoint_receive_packet( struct reliable_endpoint_t * endpoint, uint8_t * packet_data, int packet_bytes );
 
-void reliable_endpoint_free_packet( struct reliable_endpoint_t * endpoint, void * packet );
+RELIABLE_API_ void reliable_endpoint_free_packet( struct reliable_endpoint_t * endpoint, void * packet );
 
-uint16_t * reliable_endpoint_get_acks( struct reliable_endpoint_t * endpoint, int * num_acks );
+RELIABLE_API_ uint16_t * reliable_endpoint_get_acks( struct reliable_endpoint_t * endpoint, int * num_acks );
 
-void reliable_endpoint_clear_acks( struct reliable_endpoint_t * endpoint );
+RELIABLE_API_ void reliable_endpoint_clear_acks( struct reliable_endpoint_t * endpoint );
 
-void reliable_endpoint_reset( struct reliable_endpoint_t * endpoint );
+RELIABLE_API_ void reliable_endpoint_reset( struct reliable_endpoint_t * endpoint );
 
-void reliable_endpoint_update( struct reliable_endpoint_t * endpoint, double time );
+RELIABLE_API_ void reliable_endpoint_update( struct reliable_endpoint_t * endpoint, double time );
 
-float reliable_endpoint_rtt( struct reliable_endpoint_t * endpoint );
+RELIABLE_API_ float reliable_endpoint_rtt( struct reliable_endpoint_t * endpoint );
 
-float reliable_endpoint_packet_loss( struct reliable_endpoint_t * endpoint );
+RELIABLE_API_ float reliable_endpoint_packet_loss( struct reliable_endpoint_t * endpoint );
 
-void reliable_endpoint_bandwidth( struct reliable_endpoint_t * endpoint, float * sent_bandwidth_kbps, float * received_bandwidth_kbps, float * acked_bandwidth_kpbs );
+RELIABLE_API_ void reliable_endpoint_bandwidth( struct reliable_endpoint_t * endpoint, float * sent_bandwidth_kbps, float * received_bandwidth_kbps, float * acked_bandwidth_kpbs );
 
-RELIABLE_CONST uint64_t * reliable_endpoint_counters( struct reliable_endpoint_t * endpoint );
+RELIABLE_API_ RELIABLE_CONST uint64_t * reliable_endpoint_counters( struct reliable_endpoint_t * endpoint );
 
-void reliable_endpoint_destroy( struct reliable_endpoint_t * endpoint );
+RELIABLE_API_ void reliable_endpoint_destroy( struct reliable_endpoint_t * endpoint );
 
-void reliable_log_level( int level );
+RELIABLE_API_ void reliable_log_level( int level );
 
-void reliable_set_printf_function( int (*function)( RELIABLE_CONST char *, ... ) );
+RELIABLE_API_ void reliable_set_printf_function( int (*function)( RELIABLE_CONST char *, ... ) );
 
-extern void (*netcode_assert_function)( RELIABLE_CONST char *, RELIABLE_CONST char *, RELIABLE_CONST char * file, int line );
+RELIABLE_API_ extern void (*netcode_assert_function)( RELIABLE_CONST char *, RELIABLE_CONST char *, RELIABLE_CONST char * file, int line );
 
 #ifndef NDEBUG
 #define reliable_assert( condition )                                                        \
@@ -153,10 +165,12 @@ do                                                                              
 #define reliable_assert( ignore ) ((void)0)
 #endif
 
-void reliable_set_assert_function( void (*function)( RELIABLE_CONST char * /*condition*/, 
-                                   RELIABLE_CONST char * /*function*/, 
-                                   RELIABLE_CONST char * /*file*/, 
+RELIABLE_API_ void reliable_set_assert_function( void (*function)( RELIABLE_CONST char * /*condition*/,
+                                   RELIABLE_CONST char * /*function*/,
+                                   RELIABLE_CONST char * /*file*/,
                                    int /*line*/ ) );
+
+RELIABLE_API_ extern void reliable_test();
 
 #ifdef __cplusplus
 }

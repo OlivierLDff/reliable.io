@@ -14,7 +14,6 @@
 *.so
 
 # Misc
-*.txt
 *.7z
 *.zip
 *.tar.gz
@@ -27,11 +26,19 @@
 bin
 obj
 ipch
-Debug
-release
-Release
+[Rr]elease
+[Dd]ebug
 Secure
 .vs
 cov-int
 Docker/reliable.io
 docs
+
+# Allow in source build
+[Bb]uild*/
+# Ignore qt files when importing CMakeLists
+*.users
+# Ignore CLion project files
+*.idea
+# For macOs users
+.DS_Store
