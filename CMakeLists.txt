@@ -26,7 +26,7 @@ CMAKE_MINIMUM_REQUIRED( VERSION 3.11 )
 # General
 SET( RELIABLE_PROJECT "reliable" CACHE STRING "Project Name")
 SET( RELIABLE_TARGET ${RELIABLE_PROJECT} CACHE STRING "reliable.io library name" )
-SET( RELIABLE_VERSION "1.02" CACHE STRING "reliable.io current version, this is only decorative and will not configure any files" FORCE )
+SET( RELIABLE_VERSION "1.2" CACHE STRING "reliable.io current version, this is only decorative and will not configure any files" FORCE )
 SET( RELIABLE_BUILD_SHARED OFF CACHE BOOL "Build as a shared library (ON) or as static (OFF)" )
 SET( RELIABLE_FOLDER_PREFIX ${RELIABLE_PROJECT} CACHE STRING "Prefix folder for all reliable.io generated targets in generated project (only decorative)" )
 
