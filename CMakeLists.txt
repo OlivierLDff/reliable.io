@@ -26,7 +26,7 @@ CMAKE_MINIMUM_REQUIRED( VERSION 3.11 )
 # General
 SET( RELIABLE_PROJECT "reliable" CACHE STRING "Project Name")
 SET( RELIABLE_TARGET ${RELIABLE_PROJECT} CACHE STRING "reliable.io library name" )
-SET( RELIABLE_VERSION "1.02" CACHE STRING "reliable.io current version, this is only decorative and will not configure any files" FORCE )
+SET( RELIABLE_VERSION "1.2" CACHE STRING "reliable.io current version, this is only decorative and will not configure any files" FORCE )
 SET( RELIABLE_BUILD_SHARED OFF CACHE BOOL "Build as a shared library (ON) or as static (OFF)" )
 SET( RELIABLE_FOLDER_PREFIX ${RELIABLE_PROJECT} CACHE STRING "Prefix folder for all reliable.io generated targets in generated project (only decorative)" )
 
@@ -163,7 +163,7 @@ ENDIF(RELIABLE_ENABLE_TESTS)
 
 IF(RELIABLE_ENABLE_EXAMPLES)
 
-    MACRO(NETCODDEIO_ADD_EXAMPLE EXAMPLE_NAME)
+    MACRO(RELIABLE_ADD_EXAMPLE EXAMPLE_NAME)
 
         SET(EXAMPLE_FULL_NAME ${RELIABLE_EXAMPLES_PREFIX}_${EXAMPLE_NAME})
 
@@ -175,9 +175,9 @@ IF(RELIABLE_ENABLE_EXAMPLES)
 
     ENDMACRO()
 
-    NETCODDEIO_ADD_EXAMPLE(soak)
-    NETCODDEIO_ADD_EXAMPLE(stats)
-    NETCODDEIO_ADD_EXAMPLE(fuzz)
+    RELIABLE_ADD_EXAMPLE(soak)
+    RELIABLE_ADD_EXAMPLE(stats)
+    RELIABLE_ADD_EXAMPLE(fuzz)
 
 ENDIF(RELIABLE_ENABLE_EXAMPLES)
 
