@@ -87,9 +87,9 @@ extern "C" {
 #endif
 #endif
 
-RELIABLE_API_ int reliable_init();
+RELIABLE_API_ int reliable_init(void);
 
-RELIABLE_API_ void reliable_term();
+RELIABLE_API_ void reliable_term(void);
 
 struct reliable_config_t
 {

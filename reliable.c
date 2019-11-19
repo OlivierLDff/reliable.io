@@ -27,7 +27,6 @@
 #include <memory.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 #include <stdarg.h>
 #include <inttypes.h>
 #include <float.h>
@@ -112,12 +111,12 @@ void reliable_default_free_function( void * context, void * pointer )
 
 // ------------------------------------------------------------------
 
-int reliable_init()
+int reliable_init(void)
 {
     return RELIABLE_OK;
 }
 
-void reliable_term()
+void reliable_term(void)
 {
 }
 
@@ -1272,6 +1271,7 @@ void reliable_endpoint_reset( struct reliable_endpoint_t * endpoint )
     endpoint->sequence = 0;
 
     memset( endpoint->acks, 0, endpoint->config.ack_buffer_size * sizeof( uint16_t ) );
+    memset( endpoint->counters, 0, RELIABLE_ENDPOINT_NUM_COUNTERS * sizeof( uint64_t ) );
 
     int i;
     for ( i = 0; i < endpoint->config.fragment_reassembly_buffer_size; ++i )
